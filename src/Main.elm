@@ -7,7 +7,7 @@ import Json.Decode as D
 
 
 type alias Model =
-    Int
+    String
 
 
 type Msg
@@ -16,7 +16,7 @@ type Msg
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( 999, Cmd.none )
+    ( "", Cmd.none )
 
 port intoElm : (E.Value -> msg) -> Sub msg
 
