@@ -7,5 +7,5 @@
 
   app.ports.outOfElm.subscribe(x => console.log(x))
 
-  app.ports.intoElm.send(1234)
+  app.ports.intoElm.send('one lb chopped kale')
 })()

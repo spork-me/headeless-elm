@@ -5,22 +5,14 @@ import Html exposing (..)
 import Json.Encode as E
 import Json.Decode as D
 
+type alias Model = String
 
-type alias Model =
-    String
-
-
-type Msg
-    = GotJSValue E.Value
-
+type Msg = GotJSValue E.Value
 
 init : () -> ( Model, Cmd Msg )
-init _ =
-    ( "", Cmd.none )
+init _ = ( "", Cmd.none )
 
 port intoElm : (E.Value -> msg) -> Sub msg
-
-
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
@@ -28,23 +20,42 @@ subscriptions _ =
 
 port outOfElm : E.Value -> Cmd msg
 
+--
+type alias Measurement =
+    { quantity : String
+    , unit: String
+    , desc: String
+    }
+
+parseMeasurement : String -> Measurement
+parseMeasurement input =
+    { quantity = "1"
+    , unit = "LB"
+    , desc = "butter"
+    }
+
+encodeMeasurement : Measurement -> E.Value
+encodeMeasurement measurement =
+    E.object
+        [ ("quantity", E.string measurement.quantity)
+        , ("unit", E.string measurement.unit)
+        , ("desc", E.string measurement.desc)
+        ]
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotJSValue value ->
-            -- figure out what JS sent
-            case D.decodeValue D.int value of
+            case D.decodeValue D.string value of
                 Err err ->
-                    (model, Cmd.none)
+                    (D.errorToString err, Cmd.none)
+
                 Ok decoded ->
-                    -- perform a calculation
-                    -- send it back through port
-                    (model , outOfElm (E.int decoded))
+                    (model , parseMeasurement decoded |> encodeMeasurement |> outOfElm)
 
 
 view : Model -> Html Msg
-view model =
+view _ =
     div [] []
 
 
