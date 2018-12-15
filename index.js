@@ -7,5 +7,10 @@
 
   app.ports.outOfElm.subscribe(x => console.log(x))
 
-  app.ports.intoElm.send('one lb chopped kale')
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('input').addEventListener('blur', (event) => {
+      app.ports.intoElm.send(event.target.value)
+    })
+  })
 })()

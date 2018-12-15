@@ -29,10 +29,26 @@ type alias Measurement =
 
 parseMeasurement : String -> Measurement
 parseMeasurement input =
-    { quantity = "1"
-    , unit = "LB"
-    , desc = "butter"
-    }
+        case String.words input of
+            h :: tail ->
+                case tail of
+                    h2 :: t2 ->
+                        { quantity =  h
+                        , unit = h2
+                        , desc = String.join " " t2
+                        }
+                    [] ->
+                        { quantity = "?"
+                        , unit =  "?"
+                        , desc = "?"
+                        }
+
+            [] ->
+                { quantity = "?"
+                , unit =  "?"
+                , desc = "?"
+                }
+
 
 encodeMeasurement : Measurement -> E.Value
 encodeMeasurement measurement =
