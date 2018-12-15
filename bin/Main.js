@@ -5350,18 +5350,36 @@ var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$Main$init = function (_n0) {
 	return _Utils_Tuple2(999, elm$core$Platform$Cmd$none);
 };
-var elm$core$Platform$Sub$batch = _Platform_batch;
-var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
-var author$project$Main$subscriptions = function (_n0) {
-	return elm$core$Platform$Sub$none;
+var author$project$Main$GotJSValue = function (a) {
+	return {$: 'GotJSValue', a: a};
 };
-var author$project$Main$update = F2(
-	function (msg, model) {
-		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
-	});
+var elm$json$Json$Decode$value = _Json_decodeValue;
+var author$project$Main$intoElm = _Platform_incomingPort('intoElm', elm$json$Json$Decode$value);
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
+var author$project$Main$subscriptions = function (_n0) {
+	return author$project$Main$intoElm(author$project$Main$GotJSValue);
+};
+var author$project$Main$outOfElm = _Platform_outgoingPort('outOfElm', elm$core$Basics$identity);
+var elm$json$Json$Decode$decodeValue = _Json_run;
+var elm$json$Json$Decode$int = _Json_decodeInt;
+var elm$json$Json$Encode$int = _Json_wrap;
+var author$project$Main$update = F2(
+	function (msg, model) {
+		var value = msg.a;
+		var _n1 = A2(elm$json$Json$Decode$decodeValue, elm$json$Json$Decode$int, value);
+		if (_n1.$ === 'Err') {
+			var err = _n1.a;
+			return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		} else {
+			var decoded = _n1.a;
+			return _Utils_Tuple2(
+				model,
+				author$project$Main$outOfElm(
+					elm$json$Json$Encode$int(decoded)));
+		}
+	});
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -7766,7 +7784,6 @@ var elm$browser$Debugger$Metadata$isPortable = function (_n0) {
 			A2(elm$browser$Debugger$Metadata$Error, types.message, problems));
 	}
 };
-var elm$json$Json$Decode$decodeValue = _Json_run;
 var elm$browser$Debugger$Metadata$decode = function (value) {
 	var _n0 = A2(elm$json$Json$Decode$decodeValue, elm$browser$Debugger$Metadata$decoder, value);
 	if (_n0.$ === 'Err') {
@@ -8920,7 +8937,6 @@ var elm$browser$Debugger$Main$download = F2(
 			A2(_Debugger_download, historyLength, json));
 	});
 var elm$browser$Debugger$History$jsToElm = _Debugger_unsafeCoerce;
-var elm$json$Json$Decode$value = _Json_decodeValue;
 var elm$browser$Debugger$History$decoder = F2(
 	function (initialModel, update) {
 		var addMessage = F2(
@@ -9645,4 +9661,4 @@ var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
 	{init: author$project$Main$init, subscriptions: author$project$Main$subscriptions, update: author$project$Main$update, view: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(
-	elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.0"},"types":{"message":"Main.Msg","aliases":{},"unions":{"Main.Msg":{"args":[],"tags":{"Noop":[]}}}}})}});}(this));
+	elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.0"},"types":{"message":"Main.Msg","aliases":{},"unions":{"Main.Msg":{"args":[],"tags":{"GotJSValue":["Json.Encode.Value"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}}}}})}});}(this));

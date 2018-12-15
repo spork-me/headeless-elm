@@ -4,4 +4,8 @@
     // anything meaningful, though.
     node: document.getElementById('root')
   })
+
+  app.ports.outOfElm.subscribe(x => console.log(x))
+
+  app.ports.intoElm.send(1234)
 })()
