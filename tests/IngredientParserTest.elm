@@ -18,6 +18,10 @@ suite =
                 Expect.equal
                     (IngredientParser.parse "1.5 packets salt and pepper")
                     (Ingredient "1.5" "packets" "salt and pepper")
-        , todo "parse with rational number"
+        , test "parse with rational quantity" <|
+            \() ->
+                Expect.equal
+                    (IngredientParser.parse "2/3 cup concrete aggregate")
+                    (Ingredient "2/3" "cup" "concrete aggregate")
         , todo "parse without quantity"
         ]

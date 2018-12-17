@@ -14,7 +14,7 @@ parseUnit : Parser String
 parseUnit =
     getChompedString <|
         succeed ()
-            |. chompWhile (\c -> Char.isDigit c || c == '.')
+            |. chompWhile (\c -> Char.isDigit c || c == '.' || c == '/')
 
 
 parseLine : Parser Ingredient
