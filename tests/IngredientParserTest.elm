@@ -23,5 +23,14 @@ suite =
                 Expect.equal
                     (IngredientParser.parse "2/3 cup concrete aggregate")
                     (Ingredient "2/3" "cup" "concrete aggregate")
-        , todo "parse without quantity"
+        , test "parse with bad quantity" <|
+            \() ->
+                Expect.equal
+                    (IngredientParser.parse "2/3e12 cup concrete aggregate")
+                    (Ingredient "2/3" "cup" "concrete aggregate")
+        , test "parse with no quantity" <|
+            \() ->
+                Expect.equal
+                    (IngredientParser.parse "season beef overnight")
+                    (Ingredient "1" "EA" "season beef overnight")
         ]
