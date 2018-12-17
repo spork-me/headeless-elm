@@ -8,7 +8,7 @@ import Test exposing (..)
 suite : Test
 suite =
     describe "Parsing"
-        [ test "it works" <|
+        [ test "parses int / unit / description" <|
             \() ->
                 Expect.equal
                     (IngredientParser.parse "12 cup salt and pepper")
