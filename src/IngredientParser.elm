@@ -10,10 +10,17 @@ type alias Ingredient =
     }
 
 
+parseUnit : Parser String
+parseUnit =
+    getChompedString <|
+        succeed ()
+            |. chompWhile (\c -> Char.isDigit c || c == '.')
+
+
 parseLine : Parser Ingredient
 parseLine =
     succeed Ingredient
-        |= (getChompedString <| chompWhile Char.isDigit)
+        |= parseUnit
         |. spaces
         |= (getChompedString <| chompWhile (\c -> c /= ' '))
         |. spaces
