@@ -39,4 +39,8 @@ parse input =
             Ingredient "A" "B" "C"
 
         Ok result ->
-            result
+            if String.isEmpty result.quantity then
+                Ingredient "1" "EA" input
+
+            else
+                result
